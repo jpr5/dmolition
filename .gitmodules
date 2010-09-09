@@ -31,3 +31,6 @@
 [submodule "gems/rails.git"]
 	path = gems/rails.git
 	url = git://github.com/rails/rails
+[submodule "gems/addressable.git"]
+	path = gems/addressable.git
+	url = git://github.com/sporkmonger/addressable

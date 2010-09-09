@@ -1,0 +1,8 @@
+#!/usr/bin/ruby -rubygems -rirb
+
+Dir.chdir(File.expand_path("#{File.dirname(__FILE__)}/..")) do
+    require 'config/bootstrap'
+end
+
+IRB.start(__FILE__)
+
