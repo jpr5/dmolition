@@ -2,6 +2,31 @@ task :default do
     Kernel.exec("#{$0}", '-T')
 end
 
+desc "List all remotes for submodules"
+task 'remotes' do
+    Dir["gems/*"].each do |dir|
+        Dir.chdir(dir) do
+            puts "#{dir}:"
+            puts `git remote -v show`
+        end
+    end
+end
+
+desc "Initialize/update submodules + set upstream remotes"
+task 'remotes:setup' do
+    `git submodule init`
+    `git submodule update`
+
+    # Setup upstreams (where origin is our own forked repo)
+    {
+        'dm-core.git'       => 'git://github.com/datamapper/dm-core.git',
+        'dm-do-adapter.git' => 'git://github.com/datamapper/dm-do-adapter.git',
+    }.each do |repo, target|
+        Dir.chdir("gems/#{repo}") { `git remote add upstream #{target}` }
+    end
+end
+
+# Set up compilation for any native Gems.
 begin
     require 'rake/extensiontask'
 rescue LoadError
