@@ -1,0 +1,33 @@
+[submodule "gems/dm-core.git"]
+	path = gems/dm-core.git
+	url = git@github.com:jpr5/dm-core.git
+[submodule "gems/dm-more.git"]
+	path = gems/dm-more.git
+	url = git@github.com:jpr5/dm-more.git
+[submodule "gems/dm-do-adapter.git"]
+	path = gems/dm-do-adapter.git
+	url = git@github.com:jpr5/dm-do-adapter.git
+[submodule "gems/dm-sqlite-adapter.git"]
+	path = gems/dm-sqlite-adapter.git
+	url = git://github.com/datamapper/dm-sqlite-adapter.git
+[submodule "gems/dm-validations.git"]
+	path = gems/dm-validations.git
+	url = git://github.com/datamapper/dm-validations
+[submodule "gems/dm-constraints.git"]
+	path = gems/dm-constraints.git
+	url = git://github.com/datamapper/dm-constraints
+[submodule "gems/do.git"]
+	path = gems/do.git
+	url = git://github.com/datamapper/do
+[submodule "gems/dm-migrations.git"]
+	path = gems/dm-migrations.git
+	url = git://github.com/datamapper/dm-migrations
+[submodule "gems/dm-sweatshop.git"]
+	path = gems/dm-sweatshop.git
+	url = git://github.com/datamapper/dm-sweatshop
+[submodule "gems/dm-mysql-adapter.git"]
+	path = gems/dm-mysql-adapter.git
+	url = git://github.com/datamapper/dm-mysql-adapter
+[submodule "gems/rails.git"]
+	path = gems/rails.git
+	url = git://github.com/rails/rails
