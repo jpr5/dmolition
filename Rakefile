@@ -2,6 +2,9 @@ task :default do
     Kernel.exec("#{$0}", '-T')
 end
 
+##
+## Submodules/remotes.
+##
 desc "List all remotes for submodules"
 task 'remotes' do
     Dir["gems/*"].each do |dir|
@@ -25,8 +28,11 @@ task 'remotes:setup' do
         Dir.chdir("gems/#{repo}") { `git remote add upstream #{target}` }
     end
 end
+task :setup => [ 'remotes:setup' ]
 
-# Set up compilation for any native Gems.
+##
+## Set up compilation for any native Gems.
+##
 begin
     require 'rake/extensiontask'
 rescue LoadError
@@ -53,3 +59,59 @@ else
         end
     end
 end
+
+##
+## Invoke tests.
+##
+
+task :test
+
+namespace :test do
+
+    task :env do
+        ENV['RUBY_ENV'] = ENV['RAILS_ENV'] = ENV['RACK_ENV'] = "test"
+        ENV["ADAPTER"] ||= "mysql" # for DM
+
+        require 'config/bootstrap'
+    end
+
+    begin
+        require 'spec'
+        require 'spec/rake/spectask'
+
+        Spec::Rake::SpecTask.new(:spec) do |t|
+            Rake::Task["test:env"].invoke
+
+            t.pattern    = ENV['SPEC'] || 'spec/**/*_spec.rb'
+            t.warning    = false
+            t.rcov       = false
+        end
+
+        Rake::Task['test'].enhance(['test:spec'])
+    rescue LoadError
+    end if File.directory?("spec")
+
+    begin
+        require 'cucumber'
+        require 'cucumber/rake/task'
+
+        Cucumber::Rake::Task.new(:cukes => :env) do |t|
+            options = []
+            options += %w"spec --format pretty"
+            options += %w"-r spec/step_definitions"
+            options += %w"-r spec/support"
+
+            options += [ "-t", ENV['TAGS'] ] if ENV['TAGS']
+            options += [ "-n", ENV['NAME'] ] if ENV['NAME']
+
+            t.libs         += $:    # Include our own vendor gem paths
+            t.fork          = false # We've already loaded the required libs
+            t.cucumber_opts = options
+        end
+
+        Rake::Task['test'].enhance(['test:cukes'])
+    rescue LoadError
+    end if File.directory?("spec/features")
+
+end
+
