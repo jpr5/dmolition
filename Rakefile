@@ -28,7 +28,7 @@ task 'remotes:setup' do
         Dir.chdir("gems/#{repo}") { `git remote add upstream #{target}` }
     end
 end
-task :setup => [ 'remotes:setup' ]
+task :setup => [ 'remotes:setup', 'compile' ]
 
 ##
 ## Set up compilation for any native Gems.
@@ -37,9 +37,6 @@ begin
     require 'rake/extensiontask'
 rescue LoadError
 else
-    desc "Compile any native gems"
-    task :compile
-
     TMPDIR = case `uname -s`.chomp
         when 'Darwin' then '/private/tmp'
         when 'Linux'  then '/tmp'
@@ -58,6 +55,9 @@ else
             end
         end
     end
+ensure
+    desc "Compile any native gems"
+    task :compile
 end
 
 ##
